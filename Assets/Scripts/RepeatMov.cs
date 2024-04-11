@@ -8,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class RepeatMov : MonoBehaviour
 {
+    [SerializeField] int damage;
     [NonSerialized] public Vector3 target;
     float t = 0.0f;
 
@@ -24,8 +25,15 @@ public class RepeatMov : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log(collision.gameObject.name);
-        if (collision.gameObject.tag == "WeaponYellow") Destroy(this.gameObject);
-        else if (collision.gameObject.tag == "Player") Destroy(this.gameObject);
-
+        if (collision.gameObject.tag == "WeaponYellow") 
+        {
+            Destroy(this.gameObject); 
+        }
+        else if (collision.gameObject.tag == "Player") 
+        {
+            PlayerStatus player = collision.gameObject.GetComponent<PlayerStatus>();
+            player.Hit(damage);
+            Destroy(this.gameObject);
+        }
     }
 }

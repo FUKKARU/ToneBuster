@@ -7,6 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class SharpMov : MonoBehaviour
 {
+    [SerializeField] int damage;
     [NonSerialized] public Vector3 target;
     float t = 0.0f;
     
@@ -24,8 +25,13 @@ public class SharpMov : MonoBehaviour
     {
         Debug.Log(collision.gameObject.name);
         if (collision.gameObject.tag == "WeaponGreen") Destroy(this.gameObject);
-        else if (collision.gameObject.tag == "Player") Destroy(this.gameObject);
-        
+        else if (collision.gameObject.tag == "Player")
+        {
+            PlayerStatus player = collision.gameObject.GetComponent<PlayerStatus>();
+            player.Hit(damage);
+            Destroy(this.gameObject);
+        }
+
     }
 
     

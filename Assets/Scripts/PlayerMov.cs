@@ -7,6 +7,9 @@ using UnityEngine;
 public class PlayerMov : MonoBehaviour
 {
     [SerializeField] FixedJoystick joystick;
+    [SerializeField] KeyCode modeChangeKey;
+    [SerializeField] GameObject modeBtnYellow;
+    [SerializeField] GameObject modeBtnGreen;
 
     float inputX, inputY, currentDeg;
     [SerializeField] List<GameObject> weapons = new List<GameObject> { };
@@ -16,6 +19,19 @@ public class PlayerMov : MonoBehaviour
         inputX = joystick.Horizontal;
         inputY = joystick.Vertical;
         currentDeg = Mathf.Atan2(inputY, inputX) * Mathf.Rad2Deg;//ジョイスティックの角度を確保
+
+        // モード切り替え
+        if (Input.GetKeyDown(modeChangeKey)) 
+        {
+            if (weapons[0].tag == "WeaponGreen")
+            {
+                WeaponMode_Yellow();
+            }
+            else
+            {
+                WeaponMode_Green();
+            }   
+        }
 
         WeaponActivation();       
     }
@@ -27,6 +43,9 @@ public class PlayerMov : MonoBehaviour
             weapons[w].tag = "WeaponGreen";
             weapons[w].GetComponent<SpriteRenderer>().color = Color.green;
         }
+
+        modeBtnGreen.SetActive(true);
+        modeBtnYellow.SetActive(false);
     }
 
     public void WeaponMode_Yellow()
@@ -36,6 +55,9 @@ public class PlayerMov : MonoBehaviour
             weapons[w].tag = "WeaponYellow";
             weapons[w].GetComponent<SpriteRenderer>().color = Color.yellow;
         }
+
+        modeBtnGreen.SetActive(false);
+        modeBtnYellow.SetActive(true);
     }
 
     void AlphaChanger(GameObject g ,float nextalpha)
